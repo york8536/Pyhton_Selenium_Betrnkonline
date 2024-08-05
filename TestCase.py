@@ -2,8 +2,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import NoSuchElementException, WebDriverException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException # 錯誤類型搭配except使用 
 import sys
+import time
+from selenium.webdriver.support.ui import WebDriverWait #顯性等待​
+from selenium.webdriver.support import expected_conditions as EC #等待條件
 
 # ------------------------------------------------------------------- 建立ChromeDriver並套用基礎設定
 def setup_driver():
@@ -63,14 +66,27 @@ def open_news(driver): # 打開最新消息
     try:
         get_news = driver.find_element(By.XPATH, ".//nav[@class='navBar_navTopList__Xaa_z']/ul/li[2]")
         get_news.click()
+        # get_all = WebDriverWait(driver,timeout=3).until(EC.element_to_be_clickable((By.XPATH, ".//ul[@class='tab_owlTab__ib_3_']/li[1]"))) # 顯性等待
         get_all = driver.find_element(By.XPATH, ".//ul[@class='tab_owlTab__ib_3_']/li[1]")
         get_all.click()
+        # time.sleep(1)
+        open_all = driver.find_elements(By.XPATH, ".//div[@class='announcement_page_ListContainer__8lxIu']/div")
+        for news in open_all:
+            news.click()
+            get_news_title = driver.find_element(By.XPATH, ".//div[@class='annModal_title__ztKHL']/h3")
+            print('最新消息標題 : '+get_news_title.text)
+            close_news = driver.find_element(By.XPATH, ".//button[@class='detailModal_closeBtn__mWsKW']")
+            close_news.click()
+            
         get_activity = driver.find_element(By.XPATH, ".//ul[@class='tab_owlTab__ib_3_']/li[2]")
         get_activity.click()
+        # time.sleep(1)
         get_maintain = driver.find_element(By.XPATH, ".//ul[@class='tab_owlTab__ib_3_']/li[3]")
         get_maintain.click()
+        # time.sleep(1)
         get_other = driver.find_element(By.XPATH, ".//ul[@class='tab_owlTab__ib_3_']/li[4]")
         get_other.click()
+        # time.sleep(1)
     except NoSuchElementException as e:
         print(f"Error opening 'News': {e}")
 
