@@ -54,6 +54,17 @@ def close_limitAge_btn(driver): # 關閉年紀限制視窗
         get_limitAge_btn.click()
     except NoSuchElementException as e:
         print(f"Error closing limit age button: {e}")
+    
+def control_slider_ad(driver): # 切換輪播廣告
+    try:
+        get_prevArrow = driver.find_element(By.CLASS_NAME, "indexCarousel_samplePrevArrow__IVQan")
+        get_prevArrow.click()
+        time.sleep(1.5)
+        get_nextArrow = driver.find_element(By.CLASS_NAME, "indexCarousel_sampleNextArrow__7zNz_")
+        get_nextArrow.click()
+        time.sleep(1.5)
+    except NoSuchElementException as e:
+        print(f"Error controlling 'slider ad': {e}")
 
 def open_play(driver): # 打開立即玩
     try:
@@ -77,6 +88,19 @@ def open_news(driver): # 打開最新消息
             print('最新消息標題 : '+get_news_title.text)
             close_news = driver.find_element(By.XPATH, ".//button[@class='detailModal_closeBtn__mWsKW']")
             close_news.click()
+        
+        open_all[0].click()
+        time.sleep(1.5)
+        copy_URL = driver.find_element(By.XPATH, ".//button[@class='detailModal_copyBtn__AvhU9']")
+        copy_URL.click()
+        WebDriverWait(driver,timeout=3).until(EC.visibility_of_element_located((By.XPATH, "//*[contains(text(), '複製成功')]")))
+        get_next = driver.find_element(By.XPATH, ".//div[@class='detailModal_annFooter__BFFIW']/button[2]")
+        get_next.click()
+        time.sleep(1.5)
+        get_previous = driver.find_element(By.XPATH, ".//div[@class='detailModal_annFooter__BFFIW']/button[1]")
+        get_previous.click()
+        close_news = driver.find_element(By.XPATH, ".//button[@class='detailModal_closeBtn__mWsKW']")
+        close_news.click()
             
         get_activity = driver.find_element(By.XPATH, ".//ul[@class='tab_owlTab__ib_3_']/li[2]")
         get_activity.click()
