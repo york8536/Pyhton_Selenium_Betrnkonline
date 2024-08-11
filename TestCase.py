@@ -115,14 +115,17 @@ def open_news(driver): # 開啟最新消息
 def read_news(driver): # 查看最新消息
     try:
         open_all = driver.find_elements(By.XPATH, ".//div[@class='announcement_page_ListContainer__8lxIu']/div")
+        news_list = []
         for news in open_all:
             news.click()
             time.sleep(0.5)
             get_news_title = driver.find_element(By.XPATH, ".//div[@class='annModal_title__ztKHL']/h3")
-            print('最新消息標題 : '+get_news_title.text)     
+            news_list.append(get_news_title.text)  
             close_news = driver.find_element(By.XPATH, ".//button[@class='detailModal_closeBtn__mWsKW']")     
             close_news.click()
-            print('查看最新消息-OK')
+        print('查看最新消息-OK  ', news_list)
+        
+        return news_list
     except NoSuchElementException as e:
         print(f"查看最新消息-Error: {e}")
 
