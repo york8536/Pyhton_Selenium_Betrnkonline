@@ -42,6 +42,7 @@ def google_login(driver, account, password): # Google登入
 def betrnk_login(driver): # 官網登入
     try:
         driver.find_element(By.CLASS_NAME, "signInFloat_signInButton___h228").click()
+        time.sleep(1)
         driver.find_element(By.CLASS_NAME, "signIModal_loginBtnGoogle__bFsCU").click()
         memberTitle = driver.find_element(By.CLASS_NAME, "signInFloat_memberTitle__dz7NN")
         return memberTitle
@@ -325,16 +326,84 @@ def test_purchase(driver): # 測試購點兌換
     open_redeemPoints(driver)
     open_serialNumbers(driver)
 
-def open_service(driver): # 打開客服中心
+def open_service(driver, subTab): # 打開客服中心
     try:
+        time.sleep(1)
         get_service = driver.find_element(By.XPATH, ".//nav[@class='navBar_navTopList__Xaa_z']/ul/li[6]")
         get_service.click()
+        time.sleep(1)
+        match subTab:
+            case 'CSInformation':
+                get_serviceInformation = driver.find_element(By.XPATH, ".//ul[@class='navBar_subMenu__cw8xl']/li[1]")
+                get_serviceInformation.click()
+            case 'FAQ':
+                get_FAQ = driver.find_element(By.XPATH, ".//ul[@class='navBar_subMenu__cw8xl']/li[2]")
+                get_FAQ.click()
+            case 'suspensionList':
+                get_suspensionList = driver.find_element(By.XPATH, ".//ul[@class='navBar_subMenu__cw8xl']/li[3]")
+                get_suspensionList.click()        
+            case 'userRegulations':
+                get_userRegulations = driver.find_element(By.XPATH, ".//ul[@class='navBar_subMenu__cw8xl']/li[4]")
+                get_userRegulations.click()        
+            case 'applyDocument':
+                get_applyDocument = driver.find_element(By.XPATH, ".//ul[@class='navBar_subMenu__cw8xl']/li[5]")
+                get_applyDocument.click()   
     except NoSuchElementException as e:
-        print(f"Error opening 'Service': {e}")
+        print(f"開啟客服中心-Error: {e}")
 
-def open_member(driver): # 打開會員中心
+def open_CSInformation(driver):
+    open_service(driver, 'CSInformation')
+
+def open_FAQ(driver):
+    open_service(driver, 'FAQ')
+
+def open_suspensionList(driver):
+    open_service(driver, 'suspensionList')
+
+def open_userRegulations(driver):
+    open_service(driver, 'userRegulations')
+
+def open_applyDocument(driver):
+    open_service(driver, 'applyDocument')
+
+def test_service(driver):
+    open_CSInformation(driver)
+    open_FAQ(driver)
+    open_suspensionList(driver)
+    open_userRegulations(driver)
+    open_applyDocument(driver)
+
+
+def open_member(driver, subTab): # 打開會員中心
     try:
+        time.sleep(1)
         get_member = driver.find_element(By.XPATH, ".//nav[@class='navBar_navTopList__Xaa_z']/ul/li[7]")
         get_member.click()
+        time.sleep(1)
+        match subTab:
+            case 'memberProfile':
+                get_memberProfile = driver.find_element(By.XPATH, ".//ul[@class='navBar_subMenu__cw8xl']/li[1]")
+                get_memberProfile.click()
+            case 'passbook':
+                get_passbook = driver.find_element(By.XPATH, ".//ul[@class='navBar_subMenu__cw8xl']/li[2]")
+                get_passbook.click()
+            case 'giveGifts':
+                get_giveGifts = driver.find_element(By.XPATH, ".//ul[@class='navBar_subMenu__cw8xl']/li[3]")
+                get_giveGifts.click()
+
     except NoSuchElementException as e:
         print(f"Error opening 'Member Center': {e}")
+
+def open_memberProfile(driver):
+    open_member(driver, 'memberProfile')
+
+def open_passbook(driver):
+    open_member(driver, 'passbook')
+
+def open_giveGifts(driver):
+    open_member(driver, 'giveGifts')
+
+def test_member(driver):
+    open_memberProfile(driver)
+    open_passbook(driver)
+    open_giveGifts(driver)
